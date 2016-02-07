@@ -102,7 +102,29 @@ $(function() {
        * by the loadFeed function that the content actually changes.
        * Remember, loadFeed() is asynchronous.
        */
-       
+      var initialFeed, newFeed = '';
+
+      // Load feed from index 0 before test
+      beforeEach( function(done) {
+        loadFeed(0, function() {
+          // Saves HTML to compare in test
+          initialFeed = $('.feed').html();
+          done();
+        });
+      });
+
+      it('updates content when new feed is loaded', function(done) {
+
+        // Loads new feed
+        loadFeed(1, function() {
+          // Once loaded, save new content
+          newFeed = $('.feed').html();
+
+          // Compare new to initial
+          expect(newFeed).not.toEqual(initialFeed);
+          done();
+        });
+      });
     });
 
 }());
